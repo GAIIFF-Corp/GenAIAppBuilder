@@ -1,0 +1,2929 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "GAIIFFGenAIBuilder": {
+        "id": "GAIIFFGenAIBuilder",
+        "path": "GAIIFFGenAIBuilder",
+        "children": {
+          "MainTable": {
+            "id": "MainTable",
+            "path": "GAIIFFGenAIBuilder/MainTable",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/MainTable/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "PK",
+                        "attributeType": "S"
+                      },
+                      {
+                        "attributeName": "SK",
+                        "attributeType": "S"
+                      },
+                      {
+                        "attributeName": "GSI1PK",
+                        "attributeType": "S"
+                      },
+                      {
+                        "attributeName": "GSI1SK",
+                        "attributeType": "S"
+                      },
+                      {
+                        "attributeName": "EntityType",
+                        "attributeType": "S"
+                      },
+                      {
+                        "attributeName": "Status",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "billingMode": "PAY_PER_REQUEST",
+                    "globalSecondaryIndexes": [
+                      {
+                        "indexName": "GSI1",
+                        "keySchema": [
+                          {
+                            "attributeName": "GSI1PK",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "GSI1SK",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "projection": {
+                          "projectionType": "ALL"
+                        }
+                      },
+                      {
+                        "indexName": "StatusIndex",
+                        "keySchema": [
+                          {
+                            "attributeName": "EntityType",
+                            "keyType": "HASH"
+                          },
+                          {
+                            "attributeName": "Status",
+                            "keyType": "RANGE"
+                          }
+                        ],
+                        "projection": {
+                          "projectionType": "ALL"
+                        }
+                      }
+                    ],
+                    "keySchema": [
+                      {
+                        "attributeName": "PK",
+                        "keyType": "HASH"
+                      },
+                      {
+                        "attributeName": "SK",
+                        "keyType": "RANGE"
+                      }
+                    ],
+                    "pointInTimeRecoverySpecification": {
+                      "pointInTimeRecoveryEnabled": true
+                    },
+                    "sseSpecification": {
+                      "sseEnabled": true
+                    },
+                    "tableName": "GAIIFFGenAIBuilder-MainTable",
+                    "timeToLiveSpecification": {
+                      "attributeName": "TTL",
+                      "enabled": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.100.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "GAIIFFGenAIBuilder/MainTable/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.100.0"
+            }
+          },
+          "AccessLogsBucket": {
+            "id": "AccessLogsBucket",
+            "path": "GAIIFFGenAIBuilder/AccessLogsBucket",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/AccessLogsBucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "accessControl": "LogDeliveryWrite",
+                    "bucketEncryption": {
+                      "serverSideEncryptionConfiguration": [
+                        {
+                          "serverSideEncryptionByDefault": {
+                            "sseAlgorithm": "AES256"
+                          }
+                        }
+                      ]
+                    },
+                    "bucketName": "gaiiffgenaibuilder-access-logs-147997116952-us-east-1",
+                    "ownershipControls": {
+                      "rules": [
+                        {
+                          "objectOwnership": "ObjectWriter"
+                        }
+                      ]
+                    },
+                    "publicAccessBlockConfiguration": {
+                      "blockPublicAcls": true,
+                      "blockPublicPolicy": true,
+                      "ignorePublicAcls": true,
+                      "restrictPublicBuckets": true
+                    },
+                    "tags": [
+                      {
+                        "key": "aws-cdk:auto-delete-objects",
+                        "value": "true"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.100.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "GAIIFFGenAIBuilder/AccessLogsBucket/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "GAIIFFGenAIBuilder/AccessLogsBucket/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "bucket": {
+                          "Ref": "AccessLogsBucket83982689"
+                        },
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "s3:*",
+                              "Condition": {
+                                "Bool": {
+                                  "aws:SecureTransport": "false"
+                                }
+                              },
+                              "Effect": "Deny",
+                              "Principal": {
+                                "AWS": "*"
+                              },
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "AccessLogsBucket83982689",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "AccessLogsBucket83982689",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "s3:DeleteObject*",
+                                "s3:GetBucket*",
+                                "s3:List*",
+                                "s3:PutBucketPolicy"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::GetAtt": [
+                                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                                    "Arn"
+                                  ]
+                                }
+                              },
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "AccessLogsBucket83982689",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "AccessLogsBucket83982689",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                      "version": "2.100.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                  "version": "2.100.0"
+                }
+              },
+              "AutoDeleteObjectsCustomResource": {
+                "id": "AutoDeleteObjectsCustomResource",
+                "path": "GAIIFFGenAIBuilder/AccessLogsBucket/AutoDeleteObjectsCustomResource",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "GAIIFFGenAIBuilder/AccessLogsBucket/AutoDeleteObjectsCustomResource/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.100.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CustomResource",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.100.0"
+            }
+          },
+          "Custom::S3AutoDeleteObjectsCustomResourceProvider": {
+            "id": "Custom::S3AutoDeleteObjectsCustomResourceProvider",
+            "path": "GAIIFFGenAIBuilder/Custom::S3AutoDeleteObjectsCustomResourceProvider",
+            "children": {
+              "Staging": {
+                "id": "Staging",
+                "path": "GAIIFFGenAIBuilder/Custom::S3AutoDeleteObjectsCustomResourceProvider/Staging",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.AssetStaging",
+                  "version": "2.100.0"
+                }
+              },
+              "Role": {
+                "id": "Role",
+                "path": "GAIIFFGenAIBuilder/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.100.0"
+                }
+              },
+              "Handler": {
+                "id": "Handler",
+                "path": "GAIIFFGenAIBuilder/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CustomResourceProvider",
+              "version": "2.100.0"
+            }
+          },
+          "WebBucket": {
+            "id": "WebBucket",
+            "path": "GAIIFFGenAIBuilder/WebBucket",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/WebBucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {
+                    "bucketEncryption": {
+                      "serverSideEncryptionConfiguration": [
+                        {
+                          "serverSideEncryptionByDefault": {
+                            "sseAlgorithm": "AES256"
+                          }
+                        }
+                      ]
+                    },
+                    "bucketName": "gaiiffgenaibuilder-web-assets-147997116952-us-east-1",
+                    "loggingConfiguration": {
+                      "destinationBucketName": {
+                        "Ref": "AccessLogsBucket83982689"
+                      },
+                      "logFilePrefix": "web-bucket-logs/"
+                    },
+                    "publicAccessBlockConfiguration": {
+                      "blockPublicAcls": true,
+                      "blockPublicPolicy": true,
+                      "ignorePublicAcls": true,
+                      "restrictPublicBuckets": true
+                    },
+                    "tags": [
+                      {
+                        "key": "aws-cdk:auto-delete-objects",
+                        "value": "true"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.100.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "GAIIFFGenAIBuilder/WebBucket/Policy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "GAIIFFGenAIBuilder/WebBucket/Policy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "bucket": {
+                          "Ref": "WebBucket12880F5B"
+                        },
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "s3:*",
+                              "Condition": {
+                                "Bool": {
+                                  "aws:SecureTransport": "false"
+                                }
+                              },
+                              "Effect": "Deny",
+                              "Principal": {
+                                "AWS": "*"
+                              },
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "WebBucket12880F5B",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "WebBucket12880F5B",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "s3:DeleteObject*",
+                                "s3:GetBucket*",
+                                "s3:List*",
+                                "s3:PutBucketPolicy"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": {
+                                  "Fn::GetAtt": [
+                                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                                    "Arn"
+                                  ]
+                                }
+                              },
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "WebBucket12880F5B",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "WebBucket12880F5B",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "s3:GetBucket*",
+                                "s3:GetObject*",
+                                "s3:List*"
+                              ],
+                              "Effect": "Allow",
+                              "Principal": {
+                                "CanonicalUser": {
+                                  "Fn::GetAtt": [
+                                    "OAIE1EFC67F",
+                                    "S3CanonicalUserId"
+                                  ]
+                                }
+                              },
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "WebBucket12880F5B",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "WebBucket12880F5B",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Action": "s3:GetObject",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "CanonicalUser": {
+                                  "Fn::GetAtt": [
+                                    "OAIE1EFC67F",
+                                    "S3CanonicalUserId"
+                                  ]
+                                }
+                              },
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "WebBucket12880F5B",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "/*"
+                                  ]
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                      "version": "2.100.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                  "version": "2.100.0"
+                }
+              },
+              "AutoDeleteObjectsCustomResource": {
+                "id": "AutoDeleteObjectsCustomResource",
+                "path": "GAIIFFGenAIBuilder/WebBucket/AutoDeleteObjectsCustomResource",
+                "children": {
+                  "Default": {
+                    "id": "Default",
+                    "path": "GAIIFFGenAIBuilder/WebBucket/AutoDeleteObjectsCustomResource/Default",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.100.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CustomResource",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.100.0"
+            }
+          },
+          "LambdaRole": {
+            "id": "LambdaRole",
+            "path": "GAIIFFGenAIBuilder/LambdaRole",
+            "children": {
+              "ImportLambdaRole": {
+                "id": "ImportLambdaRole",
+                "path": "GAIIFFGenAIBuilder/LambdaRole/ImportLambdaRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.100.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/LambdaRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "lambda.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                          ]
+                        ]
+                      }
+                    ],
+                    "policies": [
+                      {
+                        "policyName": "DynamoDBAccess",
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "dynamodb:BatchGetItem",
+                                "dynamodb:BatchWriteItem",
+                                "dynamodb:ConditionCheckItem",
+                                "dynamodb:DeleteItem",
+                                "dynamodb:GetItem",
+                                "dynamodb:PutItem",
+                                "dynamodb:Query",
+                                "dynamodb:Scan",
+                                "dynamodb:UpdateItem"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                {
+                                  "Fn::GetAtt": [
+                                    "MainTable74195DAB",
+                                    "Arn"
+                                  ]
+                                },
+                                {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      {
+                                        "Fn::GetAtt": [
+                                          "MainTable74195DAB",
+                                          "Arn"
+                                        ]
+                                      },
+                                      "/index/*"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      },
+                      {
+                        "policyName": "BedrockAccess",
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "bedrock:GetFoundationModel",
+                                "bedrock:InvokeModel",
+                                "bedrock:InvokeModelWithResponseStream",
+                                "bedrock:ListFoundationModels"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      },
+                      {
+                        "policyName": "S3Access",
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "s3:DeleteObject",
+                                "s3:GetObject",
+                                "s3:PutObject"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "WebBucket12880F5B",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "/*"
+                                  ]
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.100.0"
+            }
+          },
+          "ChatLambda": {
+            "id": "ChatLambda",
+            "path": "GAIIFFGenAIBuilder/ChatLambda",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/ChatLambda/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "\nimport json\nimport boto3\nimport os\nfrom datetime import datetime\nimport uuid\n\ndynamodb = boto3.resource('dynamodb')\nbedrock = boto3.client('bedrock-runtime')\ntable_name = os.environ['MAIN_TABLE_NAME']\ntable = dynamodb.Table(table_name)\n\ndef handler(event, context):\n    try:\n        # Parse the request\n        body = json.loads(event.get('body', '{}'))\n        user_id = event['requestContext']['authorizer']['claims']['sub']\n        message = body.get('message', '')\n        conversation_id = body.get('conversationId', str(uuid.uuid4()))\n        \n        # Store user message\n        timestamp = datetime.utcnow().isoformat()\n        table.put_item(\n            Item={\n                'PK': f'USER#{user_id}',\n                'SK': f'CONV#{conversation_id}#{timestamp}',\n                'EntityType': 'Message',\n                'ConversationId': conversation_id,\n                'Message': message,\n                'Role': 'user',\n                'Timestamp': timestamp\n            }\n        )\n        \n        # Simple response for now (can be enhanced with actual Bedrock integration)\n        ai_response = f\"I received your message: {message}. This is a simple echo response.\"\n        \n        # Store AI response\n        ai_timestamp = datetime.utcnow().isoformat()\n        table.put_item(\n            Item={\n                'PK': f'USER#{user_id}',\n                'SK': f'CONV#{conversation_id}#{ai_timestamp}',\n                'EntityType': 'Message',\n                'ConversationId': conversation_id,\n                'Message': ai_response,\n                'Role': 'assistant',\n                'Timestamp': ai_timestamp\n            }\n        )\n        \n        return {\n            'statusCode': 200,\n            'headers': {\n                'Content-Type': 'application/json',\n                'Access-Control-Allow-Origin': '*',\n                'Access-Control-Allow-Headers': 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token',\n                'Access-Control-Allow-Methods': 'OPTIONS,POST,GET'\n            },\n            'body': json.dumps({\n                'conversationId': conversation_id,\n                'response': ai_response,\n                'timestamp': ai_timestamp\n            })\n        }\n        \n    except Exception as e:\n        print(f\"Error: {str(e)}\")\n        return {\n            'statusCode': 500,\n            'headers': {\n                'Content-Type': 'application/json',\n                'Access-Control-Allow-Origin': '*'\n            },\n            'body': json.dumps({'error': str(e)})\n        }\n      "
+                    },
+                    "environment": {
+                      "variables": {
+                        "MAIN_TABLE_NAME": {
+                          "Ref": "MainTable74195DAB"
+                        }
+                      }
+                    },
+                    "handler": "index.handler",
+                    "memorySize": 1024,
+                    "role": {
+                      "Fn::GetAtt": [
+                        "LambdaRole3A44B857",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "python3.11",
+                    "timeout": 900
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.100.0"
+            }
+          },
+          "DeploymentLambda": {
+            "id": "DeploymentLambda",
+            "path": "GAIIFFGenAIBuilder/DeploymentLambda",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/DeploymentLambda/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "\nconst AWS = require('aws-sdk');\nconst dynamodb = new AWS.DynamoDB.DocumentClient();\nconst tableName = process.env.MAIN_TABLE_NAME;\n\nexports.handler = async (event, context) => {\n    try {\n        const method = event.httpMethod;\n        const userId = event.requestContext.authorizer.claims.sub;\n        \n        switch (method) {\n            case 'GET':\n                return await listDeployments(userId);\n            case 'POST':\n                return await createDeployment(userId, JSON.parse(event.body));\n            case 'PUT':\n                return await updateDeployment(userId, event.pathParameters.id, JSON.parse(event.body));\n            case 'DELETE':\n                return await deleteDeployment(userId, event.pathParameters.id);\n            default:\n                return {\n                    statusCode: 405,\n                    headers: { 'Access-Control-Allow-Origin': '*' },\n                    body: JSON.stringify({ error: 'Method not allowed' })\n                };\n        }\n    } catch (error) {\n        console.error('Error:', error);\n        return {\n            statusCode: 500,\n            headers: { 'Access-Control-Allow-Origin': '*' },\n            body: JSON.stringify({ error: error.message })\n        };\n    }\n};\n\nasync function listDeployments(userId) {\n    const params = {\n        TableName: tableName,\n        KeyConditionExpression: 'PK = :pk AND begins_with(SK, :sk)',\n        ExpressionAttributeValues: {\n            ':pk': `USER#${userId}`,\n            ':sk': 'DEPLOYMENT#'\n        }\n    };\n    \n    const result = await dynamodb.query(params).promise();\n    \n    return {\n        statusCode: 200,\n        headers: { 'Access-Control-Allow-Origin': '*' },\n        body: JSON.stringify({ deployments: result.Items })\n    };\n}\n\nasync function createDeployment(userId, deployment) {\n    const deploymentId = require('crypto').randomUUID();\n    const timestamp = new Date().toISOString();\n    \n    const item = {\n        PK: `USER#${userId}`,\n        SK: `DEPLOYMENT#${deploymentId}`,\n        EntityType: 'Deployment',\n        DeploymentId: deploymentId,\n        Name: deployment.name,\n        Description: deployment.description,\n        Status: 'CREATING',\n        CreatedAt: timestamp,\n        UpdatedAt: timestamp,\n        ...deployment\n    };\n    \n    await dynamodb.put({\n        TableName: tableName,\n        Item: item\n    }).promise();\n    \n    return {\n        statusCode: 201,\n        headers: { 'Access-Control-Allow-Origin': '*' },\n        body: JSON.stringify(item)\n    };\n}\n\nasync function updateDeployment(userId, deploymentId, updates) {\n    const timestamp = new Date().toISOString();\n    \n    const params = {\n        TableName: tableName,\n        Key: {\n            PK: `USER#${userId}`,\n            SK: `DEPLOYMENT#${deploymentId}`\n        },\n        UpdateExpression: 'SET UpdatedAt = :timestamp',\n        ExpressionAttributeValues: {\n            ':timestamp': timestamp\n        },\n        ReturnValues: 'ALL_NEW'\n    };\n    \n    // Add update expressions for each field\n    Object.keys(updates).forEach(key => {\n        if (key !== 'PK' && key !== 'SK') {\n            params.UpdateExpression += `, ${key} = :${key}`;\n            params.ExpressionAttributeValues[`:${key}`] = updates[key];\n        }\n    });\n    \n    const result = await dynamodb.update(params).promise();\n    \n    return {\n        statusCode: 200,\n        headers: { 'Access-Control-Allow-Origin': '*' },\n        body: JSON.stringify(result.Attributes)\n    };\n}\n\nasync function deleteDeployment(userId, deploymentId) {\n    await dynamodb.delete({\n        TableName: tableName,\n        Key: {\n            PK: `USER#${userId}`,\n            SK: `DEPLOYMENT#${deploymentId}`\n        }\n    }).promise();\n    \n    return {\n        statusCode: 204,\n        headers: { 'Access-Control-Allow-Origin': '*' },\n        body: ''\n    };\n}\n      "
+                    },
+                    "environment": {
+                      "variables": {
+                        "MAIN_TABLE_NAME": {
+                          "Ref": "MainTable74195DAB"
+                        }
+                      }
+                    },
+                    "handler": "index.handler",
+                    "memorySize": 512,
+                    "role": {
+                      "Fn::GetAtt": [
+                        "LambdaRole3A44B857",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs18.x",
+                    "timeout": 300
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.100.0"
+            }
+          },
+          "ModelInfoLambda": {
+            "id": "ModelInfoLambda",
+            "path": "GAIIFFGenAIBuilder/ModelInfoLambda",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/ModelInfoLambda/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "zipFile": "\nconst AWS = require('aws-sdk');\nconst bedrock = new AWS.Bedrock();\n\nexports.handler = async (event, context) => {\n    try {\n        const models = await bedrock.listFoundationModels().promise();\n        \n        const supportedModels = models.modelSummaries\n            .filter(model => model.modelId.includes('claude') || model.modelId.includes('titan'))\n            .map(model => ({\n                modelId: model.modelId,\n                modelName: model.modelName,\n                providerName: model.providerName,\n                inputModalities: model.inputModalities,\n                outputModalities: model.outputModalities\n            }));\n        \n        return {\n            statusCode: 200,\n            headers: { 'Access-Control-Allow-Origin': '*' },\n            body: JSON.stringify({ models: supportedModels })\n        };\n    } catch (error) {\n        console.error('Error:', error);\n        return {\n            statusCode: 500,\n            headers: { 'Access-Control-Allow-Origin': '*' },\n            body: JSON.stringify({ error: error.message })\n        };\n    }\n};\n      "
+                    },
+                    "environment": {
+                      "variables": {
+                        "MAIN_TABLE_NAME": {
+                          "Ref": "MainTable74195DAB"
+                        }
+                      }
+                    },
+                    "handler": "index.handler",
+                    "memorySize": 256,
+                    "role": {
+                      "Fn::GetAtt": [
+                        "LambdaRole3A44B857",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs18.x",
+                    "timeout": 120
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.100.0"
+            }
+          },
+          "UserPool": {
+            "id": "UserPool",
+            "path": "GAIIFFGenAIBuilder/UserPool",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/UserPool/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Cognito::UserPool",
+                  "aws:cdk:cloudformation:props": {
+                    "accountRecoverySetting": {
+                      "recoveryMechanisms": [
+                        {
+                          "name": "verified_email",
+                          "priority": 1
+                        }
+                      ]
+                    },
+                    "adminCreateUserConfig": {
+                      "allowAdminCreateUserOnly": false
+                    },
+                    "autoVerifiedAttributes": [
+                      "email"
+                    ],
+                    "policies": {
+                      "passwordPolicy": {
+                        "temporaryPasswordValidityDays": 7,
+                        "minimumLength": 8,
+                        "requireLowercase": true,
+                        "requireUppercase": true,
+                        "requireNumbers": true,
+                        "requireSymbols": false
+                      }
+                    },
+                    "schema": [
+                      {
+                        "name": "email",
+                        "mutable": true,
+                        "required": true
+                      },
+                      {
+                        "name": "given_name",
+                        "mutable": true,
+                        "required": false
+                      },
+                      {
+                        "name": "family_name",
+                        "mutable": true,
+                        "required": false
+                      }
+                    ],
+                    "smsVerificationMessage": "The verification code to your new account is {####}",
+                    "usernameAttributes": [
+                      "email"
+                    ],
+                    "userPoolName": "GAIIFFGenAIBuilder-UserPool",
+                    "verificationMessageTemplate": {
+                      "defaultEmailOption": "CONFIRM_WITH_LINK",
+                      "emailMessageByLink": "Welcome to Generative AI Application Builder! Please click the link below to verify your email address: {##Verify Email##}",
+                      "emailSubjectByLink": "Welcome to Generative AI Application Builder - Verify your email",
+                      "smsMessage": "The verification code to your new account is {####}"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cognito.CfnUserPool",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cognito.UserPool",
+              "version": "2.100.0"
+            }
+          },
+          "UserPoolClient": {
+            "id": "UserPoolClient",
+            "path": "GAIIFFGenAIBuilder/UserPoolClient",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/UserPoolClient/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Cognito::UserPoolClient",
+                  "aws:cdk:cloudformation:props": {
+                    "accessTokenValidity": 1440,
+                    "allowedOAuthFlows": [
+                      "implicit",
+                      "code"
+                    ],
+                    "allowedOAuthFlowsUserPoolClient": true,
+                    "allowedOAuthScopes": [
+                      "email",
+                      "openid",
+                      "profile",
+                      "aws.cognito.signin.user.admin"
+                    ],
+                    "callbackUrLs": [
+                      "http://localhost:5173",
+                      "http://localhost:5174",
+                      "http://localhost:5175",
+                      "https://dh1h6woy104ss.cloudfront.net"
+                    ],
+                    "explicitAuthFlows": [
+                      "ALLOW_USER_PASSWORD_AUTH",
+                      "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+                      "ALLOW_CUSTOM_AUTH",
+                      "ALLOW_USER_SRP_AUTH",
+                      "ALLOW_REFRESH_TOKEN_AUTH"
+                    ],
+                    "generateSecret": false,
+                    "idTokenValidity": 1440,
+                    "logoutUrLs": [
+                      "http://localhost:5173",
+                      "http://localhost:5174",
+                      "http://localhost:5175",
+                      "https://dh1h6woy104ss.cloudfront.net"
+                    ],
+                    "refreshTokenValidity": 5256000,
+                    "supportedIdentityProviders": [
+                      "COGNITO"
+                    ],
+                    "tokenValidityUnits": {
+                      "idToken": "minutes",
+                      "accessToken": "minutes",
+                      "refreshToken": "minutes"
+                    },
+                    "userPoolId": {
+                      "Ref": "UserPool6BA7E5F2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cognito.CfnUserPoolClient",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cognito.UserPoolClient",
+              "version": "2.100.0"
+            }
+          },
+          "UserPoolDomain": {
+            "id": "UserPoolDomain",
+            "path": "GAIIFFGenAIBuilder/UserPoolDomain",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/UserPoolDomain/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Cognito::UserPoolDomain",
+                  "aws:cdk:cloudformation:props": {
+                    "domain": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "gaiiffgenaibuilder-",
+                          {
+                            "Ref": "AWS::AccountId"
+                          }
+                        ]
+                      ]
+                    },
+                    "userPoolId": {
+                      "Ref": "UserPool6BA7E5F2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cognito.CfnUserPoolDomain",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cognito.UserPoolDomain",
+              "version": "2.100.0"
+            }
+          },
+          "Api": {
+            "id": "Api",
+            "path": "GAIIFFGenAIBuilder/Api",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/Api/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::RestApi",
+                  "aws:cdk:cloudformation:props": {
+                    "description": "Consolidated Generative AI Application Builder API",
+                    "name": "GAIIFFGenAIBuilder-API"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.CfnRestApi",
+                  "version": "2.100.0"
+                }
+              },
+              "CloudWatchRole": {
+                "id": "CloudWatchRole",
+                "path": "GAIIFFGenAIBuilder/Api/CloudWatchRole",
+                "children": {
+                  "ImportCloudWatchRole": {
+                    "id": "ImportCloudWatchRole",
+                    "path": "GAIIFFGenAIBuilder/Api/CloudWatchRole/ImportCloudWatchRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.100.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "GAIIFFGenAIBuilder/Api/CloudWatchRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "apigateway.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.100.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.100.0"
+                }
+              },
+              "Account": {
+                "id": "Account",
+                "path": "GAIIFFGenAIBuilder/Api/Account",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Account",
+                  "aws:cdk:cloudformation:props": {
+                    "cloudWatchRoleArn": {
+                      "Fn::GetAtt": [
+                        "ApiCloudWatchRole73EC6FC4",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.CfnAccount",
+                  "version": "2.100.0"
+                }
+              },
+              "Deployment": {
+                "id": "Deployment",
+                "path": "GAIIFFGenAIBuilder/Api/Deployment",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "GAIIFFGenAIBuilder/Api/Deployment/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Deployment",
+                      "aws:cdk:cloudformation:props": {
+                        "description": "Consolidated Generative AI Application Builder API",
+                        "restApiId": {
+                          "Ref": "ApiF70053CD"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnDeployment",
+                      "version": "2.100.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Deployment",
+                  "version": "2.100.0"
+                }
+              },
+              "DeploymentStage.prod": {
+                "id": "DeploymentStage.prod",
+                "path": "GAIIFFGenAIBuilder/Api/DeploymentStage.prod",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "GAIIFFGenAIBuilder/Api/DeploymentStage.prod/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
+                      "aws:cdk:cloudformation:props": {
+                        "deploymentId": {
+                          "Ref": "ApiDeploymentB17BE62Dc400af328d912dd79fa9dcde3e1c2138"
+                        },
+                        "methodSettings": [
+                          {
+                            "httpMethod": "*",
+                            "resourcePath": "/*",
+                            "dataTraceEnabled": true,
+                            "loggingLevel": "INFO",
+                            "metricsEnabled": true
+                          }
+                        ],
+                        "restApiId": {
+                          "Ref": "ApiF70053CD"
+                        },
+                        "stageName": "prod"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnStage",
+                      "version": "2.100.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Stage",
+                  "version": "2.100.0"
+                }
+              },
+              "Endpoint": {
+                "id": "Endpoint",
+                "path": "GAIIFFGenAIBuilder/Api/Endpoint",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.100.0"
+                }
+              },
+              "Default": {
+                "id": "Default",
+                "path": "GAIIFFGenAIBuilder/Api/Default",
+                "children": {
+                  "OPTIONS": {
+                    "id": "OPTIONS",
+                    "path": "GAIIFFGenAIBuilder/Api/Default/OPTIONS",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/OPTIONS/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                          "aws:cdk:cloudformation:props": {
+                            "apiKeyRequired": false,
+                            "authorizationType": "NONE",
+                            "httpMethod": "OPTIONS",
+                            "integration": {
+                              "type": "MOCK",
+                              "requestTemplates": {
+                                "application/json": "{ statusCode: 200 }"
+                              },
+                              "integrationResponses": [
+                                {
+                                  "statusCode": "204",
+                                  "responseParameters": {
+                                    "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                                    "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                    "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+                                  }
+                                }
+                              ]
+                            },
+                            "methodResponses": [
+                              {
+                                "statusCode": "204",
+                                "responseParameters": {
+                                  "method.response.header.Access-Control-Allow-Headers": true,
+                                  "method.response.header.Access-Control-Allow-Origin": true,
+                                  "method.response.header.Access-Control-Allow-Methods": true
+                                }
+                              }
+                            ],
+                            "resourceId": {
+                              "Fn::GetAtt": [
+                                "ApiF70053CD",
+                                "RootResourceId"
+                              ]
+                            },
+                            "restApiId": {
+                              "Ref": "ApiF70053CD"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                          "version": "2.100.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                      "version": "2.100.0"
+                    }
+                  },
+                  "chat": {
+                    "id": "chat",
+                    "path": "GAIIFFGenAIBuilder/Api/Default/chat",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/chat/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "ApiF70053CD",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "chat",
+                            "restApiId": {
+                              "Ref": "ApiF70053CD"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.100.0"
+                        }
+                      },
+                      "OPTIONS": {
+                        "id": "OPTIONS",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/chat/OPTIONS",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/chat/OPTIONS/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "apiKeyRequired": false,
+                                "authorizationType": "NONE",
+                                "httpMethod": "OPTIONS",
+                                "integration": {
+                                  "type": "MOCK",
+                                  "requestTemplates": {
+                                    "application/json": "{ statusCode: 200 }"
+                                  },
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "204",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "204",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Headers": true,
+                                      "method.response.header.Access-Control-Allow-Origin": true,
+                                      "method.response.header.Access-Control-Allow-Methods": true
+                                    }
+                                  }
+                                ],
+                                "resourceId": {
+                                  "Ref": "Apichat490DD969"
+                                },
+                                "restApiId": {
+                                  "Ref": "ApiF70053CD"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.100.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.100.0"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/chat/POST",
+                        "children": {
+                          "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.POST..chat": {
+                            "id": "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.POST..chat",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/chat/POST/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.POST..chat",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "ChatLambda59BC07ED",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:147997116952:",
+                                      {
+                                        "Ref": "ApiF70053CD"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "ApiDeploymentStageprod3EB9684E"
+                                      },
+                                      "/POST/chat"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.POST..chat": {
+                            "id": "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.POST..chat",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/chat/POST/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.POST..chat",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "ChatLambda59BC07ED",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:147997116952:",
+                                      {
+                                        "Ref": "ApiF70053CD"
+                                      },
+                                      "/test-invoke-stage/POST/chat"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/chat/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "COGNITO_USER_POOLS",
+                                "authorizerId": {
+                                  "Ref": "ApiAuthorizer68095F41"
+                                },
+                                "httpMethod": "POST",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "ChatLambda59BC07ED",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "Apichat490DD969"
+                                },
+                                "restApiId": {
+                                  "Ref": "ApiF70053CD"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.100.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.100.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.100.0"
+                    }
+                  },
+                  "deployments": {
+                    "id": "deployments",
+                    "path": "GAIIFFGenAIBuilder/Api/Default/deployments",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/deployments/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "ApiF70053CD",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "deployments",
+                            "restApiId": {
+                              "Ref": "ApiF70053CD"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.100.0"
+                        }
+                      },
+                      "OPTIONS": {
+                        "id": "OPTIONS",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/deployments/OPTIONS",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/OPTIONS/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "apiKeyRequired": false,
+                                "authorizationType": "NONE",
+                                "httpMethod": "OPTIONS",
+                                "integration": {
+                                  "type": "MOCK",
+                                  "requestTemplates": {
+                                    "application/json": "{ statusCode: 200 }"
+                                  },
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "204",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "204",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Headers": true,
+                                      "method.response.header.Access-Control-Allow-Origin": true,
+                                      "method.response.header.Access-Control-Allow-Methods": true
+                                    }
+                                  }
+                                ],
+                                "resourceId": {
+                                  "Ref": "Apideployments2026C91A"
+                                },
+                                "restApiId": {
+                                  "Ref": "ApiF70053CD"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.100.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.100.0"
+                        }
+                      },
+                      "GET": {
+                        "id": "GET",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/deployments/GET",
+                        "children": {
+                          "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments": {
+                            "id": "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/GET/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "DeploymentLambda5F4766EE",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:147997116952:",
+                                      {
+                                        "Ref": "ApiF70053CD"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "ApiDeploymentStageprod3EB9684E"
+                                      },
+                                      "/GET/deployments"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments": {
+                            "id": "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/GET/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "DeploymentLambda5F4766EE",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:147997116952:",
+                                      {
+                                        "Ref": "ApiF70053CD"
+                                      },
+                                      "/test-invoke-stage/GET/deployments"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/GET/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "COGNITO_USER_POOLS",
+                                "authorizerId": {
+                                  "Ref": "ApiAuthorizer68095F41"
+                                },
+                                "httpMethod": "GET",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "DeploymentLambda5F4766EE",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "Apideployments2026C91A"
+                                },
+                                "restApiId": {
+                                  "Ref": "ApiF70053CD"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.100.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.100.0"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/deployments/POST",
+                        "children": {
+                          "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.POST..deployments": {
+                            "id": "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.POST..deployments",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/POST/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.POST..deployments",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "DeploymentLambda5F4766EE",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:147997116952:",
+                                      {
+                                        "Ref": "ApiF70053CD"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "ApiDeploymentStageprod3EB9684E"
+                                      },
+                                      "/POST/deployments"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.POST..deployments": {
+                            "id": "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.POST..deployments",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/POST/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.POST..deployments",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "DeploymentLambda5F4766EE",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:147997116952:",
+                                      {
+                                        "Ref": "ApiF70053CD"
+                                      },
+                                      "/test-invoke-stage/POST/deployments"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "COGNITO_USER_POOLS",
+                                "authorizerId": {
+                                  "Ref": "ApiAuthorizer68095F41"
+                                },
+                                "httpMethod": "POST",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "DeploymentLambda5F4766EE",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "Apideployments2026C91A"
+                                },
+                                "restApiId": {
+                                  "Ref": "ApiF70053CD"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.100.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.100.0"
+                        }
+                      },
+                      "{id}": {
+                        "id": "{id}",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                              "aws:cdk:cloudformation:props": {
+                                "parentId": {
+                                  "Ref": "Apideployments2026C91A"
+                                },
+                                "pathPart": "{id}",
+                                "restApiId": {
+                                  "Ref": "ApiF70053CD"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "OPTIONS": {
+                            "id": "OPTIONS",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/OPTIONS",
+                            "children": {
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/OPTIONS/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "apiKeyRequired": false,
+                                    "authorizationType": "NONE",
+                                    "httpMethod": "OPTIONS",
+                                    "integration": {
+                                      "type": "MOCK",
+                                      "requestTemplates": {
+                                        "application/json": "{ statusCode: 200 }"
+                                      },
+                                      "integrationResponses": [
+                                        {
+                                          "statusCode": "204",
+                                          "responseParameters": {
+                                            "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                                            "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                            "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+                                          }
+                                        }
+                                      ]
+                                    },
+                                    "methodResponses": [
+                                      {
+                                        "statusCode": "204",
+                                        "responseParameters": {
+                                          "method.response.header.Access-Control-Allow-Headers": true,
+                                          "method.response.header.Access-Control-Allow-Origin": true,
+                                          "method.response.header.Access-Control-Allow-Methods": true
+                                        }
+                                      }
+                                    ],
+                                    "resourceId": {
+                                      "Ref": "Apideploymentsid36840137"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "ApiF70053CD"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.100.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "GET": {
+                            "id": "GET",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/GET",
+                            "children": {
+                              "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments.{id}": {
+                                "id": "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments.{id}",
+                                "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/GET/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "DeploymentLambda5F4766EE",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:aws:execute-api:us-east-1:147997116952:",
+                                          {
+                                            "Ref": "ApiF70053CD"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "ApiDeploymentStageprod3EB9684E"
+                                          },
+                                          "/GET/deployments/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.100.0"
+                                }
+                              },
+                              "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments.{id}": {
+                                "id": "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments.{id}",
+                                "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/GET/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "DeploymentLambda5F4766EE",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:aws:execute-api:us-east-1:147997116952:",
+                                          {
+                                            "Ref": "ApiF70053CD"
+                                          },
+                                          "/test-invoke-stage/GET/deployments/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.100.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/GET/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "COGNITO_USER_POOLS",
+                                    "authorizerId": {
+                                      "Ref": "ApiAuthorizer68095F41"
+                                    },
+                                    "httpMethod": "GET",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "DeploymentLambda5F4766EE",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "Apideploymentsid36840137"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "ApiF70053CD"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.100.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "PUT": {
+                            "id": "PUT",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/PUT",
+                            "children": {
+                              "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.PUT..deployments.{id}": {
+                                "id": "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.PUT..deployments.{id}",
+                                "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/PUT/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.PUT..deployments.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "DeploymentLambda5F4766EE",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:aws:execute-api:us-east-1:147997116952:",
+                                          {
+                                            "Ref": "ApiF70053CD"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "ApiDeploymentStageprod3EB9684E"
+                                          },
+                                          "/PUT/deployments/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.100.0"
+                                }
+                              },
+                              "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.PUT..deployments.{id}": {
+                                "id": "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.PUT..deployments.{id}",
+                                "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/PUT/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.PUT..deployments.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "DeploymentLambda5F4766EE",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:aws:execute-api:us-east-1:147997116952:",
+                                          {
+                                            "Ref": "ApiF70053CD"
+                                          },
+                                          "/test-invoke-stage/PUT/deployments/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.100.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/PUT/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "COGNITO_USER_POOLS",
+                                    "authorizerId": {
+                                      "Ref": "ApiAuthorizer68095F41"
+                                    },
+                                    "httpMethod": "PUT",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "DeploymentLambda5F4766EE",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "Apideploymentsid36840137"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "ApiF70053CD"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.100.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "DELETE": {
+                            "id": "DELETE",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/DELETE",
+                            "children": {
+                              "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.DELETE..deployments.{id}": {
+                                "id": "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.DELETE..deployments.{id}",
+                                "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/DELETE/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.DELETE..deployments.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "DeploymentLambda5F4766EE",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:aws:execute-api:us-east-1:147997116952:",
+                                          {
+                                            "Ref": "ApiF70053CD"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "ApiDeploymentStageprod3EB9684E"
+                                          },
+                                          "/DELETE/deployments/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.100.0"
+                                }
+                              },
+                              "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.DELETE..deployments.{id}": {
+                                "id": "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.DELETE..deployments.{id}",
+                                "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/DELETE/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.DELETE..deployments.{id}",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "DeploymentLambda5F4766EE",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:aws:execute-api:us-east-1:147997116952:",
+                                          {
+                                            "Ref": "ApiF70053CD"
+                                          },
+                                          "/test-invoke-stage/DELETE/deployments/*"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.100.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "GAIIFFGenAIBuilder/Api/Default/deployments/{id}/DELETE/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "COGNITO_USER_POOLS",
+                                    "authorizerId": {
+                                      "Ref": "ApiAuthorizer68095F41"
+                                    },
+                                    "httpMethod": "DELETE",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "DeploymentLambda5F4766EE",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "Apideploymentsid36840137"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "ApiF70053CD"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.100.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.100.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                          "version": "2.100.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.100.0"
+                    }
+                  },
+                  "models": {
+                    "id": "models",
+                    "path": "GAIIFFGenAIBuilder/Api/Default/models",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/models/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "ApiF70053CD",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "models",
+                            "restApiId": {
+                              "Ref": "ApiF70053CD"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.100.0"
+                        }
+                      },
+                      "OPTIONS": {
+                        "id": "OPTIONS",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/models/OPTIONS",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/models/OPTIONS/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "apiKeyRequired": false,
+                                "authorizationType": "NONE",
+                                "httpMethod": "OPTIONS",
+                                "integration": {
+                                  "type": "MOCK",
+                                  "requestTemplates": {
+                                    "application/json": "{ statusCode: 200 }"
+                                  },
+                                  "integrationResponses": [
+                                    {
+                                      "statusCode": "204",
+                                      "responseParameters": {
+                                        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                                        "method.response.header.Access-Control-Allow-Origin": "'*'",
+                                        "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,PUT,POST,DELETE,PATCH,HEAD'"
+                                      }
+                                    }
+                                  ]
+                                },
+                                "methodResponses": [
+                                  {
+                                    "statusCode": "204",
+                                    "responseParameters": {
+                                      "method.response.header.Access-Control-Allow-Headers": true,
+                                      "method.response.header.Access-Control-Allow-Origin": true,
+                                      "method.response.header.Access-Control-Allow-Methods": true
+                                    }
+                                  }
+                                ],
+                                "resourceId": {
+                                  "Ref": "ApimodelsE97B9B13"
+                                },
+                                "restApiId": {
+                                  "Ref": "ApiF70053CD"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.100.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.100.0"
+                        }
+                      },
+                      "GET": {
+                        "id": "GET",
+                        "path": "GAIIFFGenAIBuilder/Api/Default/models/GET",
+                        "children": {
+                          "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..models": {
+                            "id": "ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..models",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/models/GET/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..models",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "ModelInfoLambda4D1CE24E",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:147997116952:",
+                                      {
+                                        "Ref": "ApiF70053CD"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "ApiDeploymentStageprod3EB9684E"
+                                      },
+                                      "/GET/models"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..models": {
+                            "id": "ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..models",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/models/GET/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..models",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "ModelInfoLambda4D1CE24E",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:147997116952:",
+                                      {
+                                        "Ref": "ApiF70053CD"
+                                      },
+                                      "/test-invoke-stage/GET/models"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.100.0"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "GAIIFFGenAIBuilder/Api/Default/models/GET/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "COGNITO_USER_POOLS",
+                                "authorizerId": {
+                                  "Ref": "ApiAuthorizer68095F41"
+                                },
+                                "httpMethod": "GET",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "ModelInfoLambda4D1CE24E",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "ApimodelsE97B9B13"
+                                },
+                                "restApiId": {
+                                  "Ref": "ApiF70053CD"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.100.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.100.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.100.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.ResourceBase",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_apigateway.RestApi",
+              "version": "2.100.0"
+            }
+          },
+          "ApiAuthorizer": {
+            "id": "ApiAuthorizer",
+            "path": "GAIIFFGenAIBuilder/ApiAuthorizer",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/ApiAuthorizer/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Authorizer",
+                  "aws:cdk:cloudformation:props": {
+                    "identitySource": "method.request.header.Authorization",
+                    "name": "GAIIFFGenAIBuilderApiAuthorizer3C2FB943",
+                    "providerArns": [
+                      {
+                        "Fn::GetAtt": [
+                          "UserPool6BA7E5F2",
+                          "Arn"
+                        ]
+                      }
+                    ],
+                    "restApiId": {
+                      "Ref": "ApiF70053CD"
+                    },
+                    "type": "COGNITO_USER_POOLS"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.CfnAuthorizer",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_apigateway.CognitoUserPoolsAuthorizer",
+              "version": "2.100.0"
+            }
+          },
+          "OAI": {
+            "id": "OAI",
+            "path": "GAIIFFGenAIBuilder/OAI",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/OAI/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+                  "aws:cdk:cloudformation:props": {
+                    "cloudFrontOriginAccessIdentityConfig": {
+                      "comment": "OAI for GAIIFFGenAIBuilder"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnCloudFrontOriginAccessIdentity",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.OriginAccessIdentity",
+              "version": "2.100.0"
+            }
+          },
+          "Distribution": {
+            "id": "Distribution",
+            "path": "GAIIFFGenAIBuilder/Distribution",
+            "children": {
+              "Origin1": {
+                "id": "Origin1",
+                "path": "GAIIFFGenAIBuilder/Distribution/Origin1",
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.4.2"
+                }
+              },
+              "Origin2": {
+                "id": "Origin2",
+                "path": "GAIIFFGenAIBuilder/Distribution/Origin2",
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.4.2"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/Distribution/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CloudFront::Distribution",
+                  "aws:cdk:cloudformation:props": {
+                    "distributionConfig": {
+                      "enabled": true,
+                      "origins": [
+                        {
+                          "domainName": {
+                            "Fn::GetAtt": [
+                              "WebBucket12880F5B",
+                              "RegionalDomainName"
+                            ]
+                          },
+                          "id": "GAIIFFGenAIBuilderDistributionOrigin1B3BC722B",
+                          "s3OriginConfig": {
+                            "originAccessIdentity": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "origin-access-identity/cloudfront/",
+                                  {
+                                    "Ref": "OAIE1EFC67F"
+                                  }
+                                ]
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "domainName": {
+                            "Fn::Select": [
+                              2,
+                              {
+                                "Fn::Split": [
+                                  "/",
+                                  {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "https://",
+                                        {
+                                          "Ref": "ApiF70053CD"
+                                        },
+                                        ".execute-api.us-east-1.",
+                                        {
+                                          "Ref": "AWS::URLSuffix"
+                                        },
+                                        "/",
+                                        {
+                                          "Ref": "ApiDeploymentStageprod3EB9684E"
+                                        },
+                                        "/"
+                                      ]
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          },
+                          "id": "GAIIFFGenAIBuilderDistributionOrigin29AD43471",
+                          "originPath": {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "/",
+                                {
+                                  "Fn::Select": [
+                                    3,
+                                    {
+                                      "Fn::Split": [
+                                        "/",
+                                        {
+                                          "Fn::Join": [
+                                            "",
+                                            [
+                                              "https://",
+                                              {
+                                                "Ref": "ApiF70053CD"
+                                              },
+                                              ".execute-api.us-east-1.",
+                                              {
+                                                "Ref": "AWS::URLSuffix"
+                                              },
+                                              "/",
+                                              {
+                                                "Ref": "ApiDeploymentStageprod3EB9684E"
+                                              },
+                                              "/"
+                                            ]
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            ]
+                          },
+                          "customOriginConfig": {
+                            "originSslProtocols": [
+                              "TLSv1.2"
+                            ],
+                            "originProtocolPolicy": "https-only"
+                          }
+                        }
+                      ],
+                      "defaultCacheBehavior": {
+                        "pathPattern": "*",
+                        "targetOriginId": "GAIIFFGenAIBuilderDistributionOrigin1B3BC722B",
+                        "allowedMethods": [
+                          "GET",
+                          "HEAD"
+                        ],
+                        "cachedMethods": [
+                          "GET",
+                          "HEAD"
+                        ],
+                        "cachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+                        "compress": true,
+                        "viewerProtocolPolicy": "redirect-to-https"
+                      },
+                      "cacheBehaviors": [
+                        {
+                          "pathPattern": "/prod/*",
+                          "targetOriginId": "GAIIFFGenAIBuilderDistributionOrigin29AD43471",
+                          "allowedMethods": [
+                            "GET",
+                            "HEAD",
+                            "OPTIONS",
+                            "PUT",
+                            "PATCH",
+                            "POST",
+                            "DELETE"
+                          ],
+                          "cachedMethods": [
+                            "GET",
+                            "HEAD"
+                          ],
+                          "cachePolicyId": "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+                          "compress": true,
+                          "originRequestPolicyId": "216adef6-5c7f-47e4-b989-5492eafa07d3",
+                          "viewerProtocolPolicy": "redirect-to-https"
+                        }
+                      ],
+                      "comment": "GAIIFFGenAIBuilder CloudFront Distribution",
+                      "customErrorResponses": [
+                        {
+                          "errorCode": 404,
+                          "responseCode": 200,
+                          "responsePagePath": "/index.html"
+                        }
+                      ],
+                      "defaultRootObject": "index.html",
+                      "httpVersion": "http2",
+                      "ipv6Enabled": true,
+                      "priceClass": "PriceClass_100"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cloudfront.CfnDistribution",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cloudfront.Distribution",
+              "version": "2.100.0"
+            }
+          },
+          "WebConfigParameter": {
+            "id": "WebConfigParameter",
+            "path": "GAIIFFGenAIBuilder/WebConfigParameter",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "GAIIFFGenAIBuilder/WebConfigParameter/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "description": "Web configuration for the Generative AI Application Builder",
+                    "name": "/gaab-webconfig/GAIIFFGenAIBuilder",
+                    "type": "String",
+                    "value": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "{\"ApiEndpoint\":\"https://",
+                          {
+                            "Ref": "ApiF70053CD"
+                          },
+                          ".execute-api.us-east-1.",
+                          {
+                            "Ref": "AWS::URLSuffix"
+                          },
+                          "/",
+                          {
+                            "Ref": "ApiDeploymentStageprod3EB9684E"
+                          },
+                          "/\",\"IsInternalUser\":\"false\",\"CognitoRedirectUrl\":\"https://",
+                          {
+                            "Fn::GetAtt": [
+                              "Distribution830FAC52",
+                              "DomainName"
+                            ]
+                          },
+                          "\",\"UserPoolId\":\"",
+                          {
+                            "Ref": "UserPool6BA7E5F2"
+                          },
+                          "\",\"UserPoolClientId\":\"",
+                          {
+                            "Ref": "UserPoolClient2F5918F7"
+                          },
+                          "\",\"AwsRegion\":\"us-east-1\",\"CognitoDomain\":\"",
+                          {
+                            "Ref": "UserPoolDomain5479B217"
+                          },
+                          ".auth.us-east-1.amazoncognito.com\"}"
+                        ]
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.100.0"
+            }
+          },
+          "CloudFrontWebUrl": {
+            "id": "CloudFrontWebUrl",
+            "path": "GAIIFFGenAIBuilder/CloudFrontWebUrl",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.100.0"
+            }
+          },
+          "RestEndpointUrl": {
+            "id": "RestEndpointUrl",
+            "path": "GAIIFFGenAIBuilder/RestEndpointUrl",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.100.0"
+            }
+          },
+          "CognitoClientId": {
+            "id": "CognitoClientId",
+            "path": "GAIIFFGenAIBuilder/CognitoClientId",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.100.0"
+            }
+          },
+          "MainTableName": {
+            "id": "MainTableName",
+            "path": "GAIIFFGenAIBuilder/MainTableName",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.100.0"
+            }
+          },
+          "WebConfigKey": {
+            "id": "WebConfigKey",
+            "path": "GAIIFFGenAIBuilder/WebConfigKey",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.100.0"
+            }
+          },
+          "UserPoolId": {
+            "id": "UserPoolId",
+            "path": "GAIIFFGenAIBuilder/UserPoolId",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.100.0"
+            }
+          },
+          "CognitoDomain": {
+            "id": "CognitoDomain",
+            "path": "GAIIFFGenAIBuilder/CognitoDomain",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnOutput",
+              "version": "2.100.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "GAIIFFGenAIBuilder/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "GAIIFFGenAIBuilder/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.100.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.4.2"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "GAIIFFGenAIBuilder/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.100.0"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "GAIIFFGenAIBuilder/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.100.0"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.100.0"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.4.2"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.100.0"
+    }
+  }
+}

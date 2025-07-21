@@ -1,0 +1,9 @@
+{
+  "ApiEndpoint": "https://7r408he8db.execute-api.us-east-1.amazonaws.com/prod/",
+  "IsInternalUser": "false",
+  "CognitoRedirectUrl": "https://genAI.gaiiff.com",
+  "UserPoolId": "us-east-1_k1T7SXQ7p",
+  "UserPoolClientId": "3g19shk3o018jc0tahtvasgg14",
+  "AwsRegion": "us-east-1",
+  "CognitoDomain": "gaiiffgenaibuilder-147997116952.auth.us-east-1.amazoncognito.com"
+}

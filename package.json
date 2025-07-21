@@ -1,0 +1,14 @@
+{
+  "name": "generative-ai-application-builder-on-aws",
+  "version": "2.1.9",
+  "private": true,
+  "scripts": {
+    "start": "npm run start:chat",
+    "start:chat": "cd source/ui-chat && npm start",
+    "start:deployment": "cd source/ui-deployment && npm start",
+    "install:all": "cd source/ui-chat && npm install && cd ../ui-deployment && npm install",
+    "build:all": "cd source/ui-chat && npm run build && cd ../ui-deployment && npm run build"
+  },
+  "description": "Generative AI Application Builder on AWS - Root package",
+  "license": "Apache-2.0"
+}

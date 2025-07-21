@@ -1,0 +1,451 @@
+{
+  "version": "34.0.0",
+  "artifacts": {
+    "GAIIFFGenAIBuilder.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "GAIIFFGenAIBuilder.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "GAIIFFGenAIBuilder": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://147997116952/us-east-1",
+      "properties": {
+        "templateFile": "GAIIFFGenAIBuilder.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::147997116952:role/cdk-hnb659fds-deploy-role-147997116952-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::147997116952:role/cdk-hnb659fds-cfn-exec-role-147997116952-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-147997116952-us-east-1/c98282a334f95fb93338ee57627649efcfecb517d634d25d91ba16d43f3b6959.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "GAIIFFGenAIBuilder.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::147997116952:role/cdk-hnb659fds-lookup-role-147997116952-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "GAIIFFGenAIBuilder.assets"
+      ],
+      "metadata": {
+        "/GAIIFFGenAIBuilder/MainTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "MainTable74195DAB"
+            }
+          }
+        ],
+        "/GAIIFFGenAIBuilder/MainTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MainTable74195DAB"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/AccessLogsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AccessLogsBucket83982689"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/AccessLogsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AccessLogsBucketPolicy7F77476F"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/AccessLogsBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "AccessLogsBucketAutoDeleteObjectsCustomResource93F9213A"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/WebBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebBucket12880F5B"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/WebBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebBucketPolicy95D08FAA"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/WebBucket/AutoDeleteObjectsCustomResource/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebBucketAutoDeleteObjectsCustomResource9C1A079F"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/LambdaRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaRole3A44B857"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/ChatLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ChatLambda59BC07ED"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/DeploymentLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeploymentLambda5F4766EE"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/ModelInfoLambda/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ModelInfoLambda4D1CE24E"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/UserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPool6BA7E5F2"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/UserPoolClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolClient2F5918F7"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/UserPoolDomain/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolDomain5479B217"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiF70053CD"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/CloudWatchRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiCloudWatchRole73EC6FC4"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Account": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiAccountA18C9B29"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiDeploymentB17BE62Dc400af328d912dd79fa9dcde3e1c2138"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiDeploymentStageprod3EB9684E"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiEndpoint4F160690"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiOPTIONS5886EA5D"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/chat/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apichat490DD969"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/chat/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApichatOPTIONS453F5123"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/chat/POST/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.POST..chat": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApichatPOSTApiPermissionGAIIFFGenAIBuilderApiEE0B96A6POSTchatB2661FD5"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/chat/POST/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.POST..chat": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApichatPOSTApiPermissionTestGAIIFFGenAIBuilderApiEE0B96A6POSTchat23A2F381"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/chat/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApichatPOSTD108BE84"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apideployments2026C91A"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsOPTIONSF2F31261"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/GET/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsGETApiPermissionGAIIFFGenAIBuilderApiEE0B96A6GETdeployments579C9CC9"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/GET/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsGETApiPermissionTestGAIIFFGenAIBuilderApiEE0B96A6GETdeployments68EAF527"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsGET49250E4B"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/POST/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.POST..deployments": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsPOSTApiPermissionGAIIFFGenAIBuilderApiEE0B96A6POSTdeploymentsB5DD38E0"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/POST/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.POST..deployments": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsPOSTApiPermissionTestGAIIFFGenAIBuilderApiEE0B96A6POSTdeploymentsABF65196"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsPOSTBB095B54"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/{id}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Apideploymentsid36840137"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/{id}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsidOPTIONS1B933B3B"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/{id}/GET/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsidGETApiPermissionGAIIFFGenAIBuilderApiEE0B96A6GETdeploymentsid76ADCFBC"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/{id}/GET/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..deployments.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsidGETApiPermissionTestGAIIFFGenAIBuilderApiEE0B96A6GETdeploymentsid9900A550"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/{id}/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsidGET5DC147FB"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/{id}/PUT/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.PUT..deployments.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsidPUTApiPermissionGAIIFFGenAIBuilderApiEE0B96A6PUTdeploymentsid995AF8A3"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/{id}/PUT/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.PUT..deployments.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsidPUTApiPermissionTestGAIIFFGenAIBuilderApiEE0B96A6PUTdeploymentsidB8C751C9"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/{id}/PUT/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsidPUTEA58659A"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/{id}/DELETE/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.DELETE..deployments.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsidDELETEApiPermissionGAIIFFGenAIBuilderApiEE0B96A6DELETEdeploymentsidCD1A4AD0"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/{id}/DELETE/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.DELETE..deployments.{id}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsidDELETEApiPermissionTestGAIIFFGenAIBuilderApiEE0B96A6DELETEdeploymentsidB1E93045"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/deployments/{id}/DELETE/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApideploymentsidDELETE805AA1B7"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/models/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimodelsE97B9B13"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/models/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimodelsOPTIONS25013733"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/models/GET/ApiPermission.GAIIFFGenAIBuilderApiEE0B96A6.GET..models": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimodelsGETApiPermissionGAIIFFGenAIBuilderApiEE0B96A6GETmodels358ACF46"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/models/GET/ApiPermission.Test.GAIIFFGenAIBuilderApiEE0B96A6.GET..models": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimodelsGETApiPermissionTestGAIIFFGenAIBuilderApiEE0B96A6GETmodels96E0D6FF"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Api/Default/models/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApimodelsGET513626E4"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/ApiAuthorizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ApiAuthorizer68095F41"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/OAI/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OAIE1EFC67F"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/Distribution/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "Distribution830FAC52"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/WebConfigParameter/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebConfigParameterDD9645A2"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/CloudFrontWebUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CloudFrontWebUrl"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/RestEndpointUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "RestEndpointUrl"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/CognitoClientId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CognitoClientId"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/MainTableName": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MainTableName"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/WebConfigKey": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "WebConfigKey"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/UserPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolId"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/CognitoDomain": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CognitoDomain"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/GAIIFFGenAIBuilder/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "GAIIFFGenAIBuilder"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}
